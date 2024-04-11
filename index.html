@@ -334,6 +334,83 @@
 </style>
 <!-- Заполни анкету end -->
 
+<script type="text/javascript">
+  var TWITCH_EXTENSION_URL = "https://player.twitch.tv/js/embed/v1.js";
+  var TWITCH_IS_INITIALIZED = false;
+  var TWITCH_TAG_IS_ADDDED = false;
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var videoWrappers = document.querySelectorAll(".video-wrapper");
+
+    var options = {
+      rootMargin: "0px",
+      threshold: 0,
+    };
+
+    function initializeObserver() {
+      var observer = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && TWITCH_IS_INITIALIZED) {
+          observer.unobserve(entry.target);
+
+          setTimeout(() => {
+            new Twitch.Player(entry.target.querySelector("div").id, {
+            channel: entry.target.querySelector("div").id.replace("twitch-embed_", ""),
+            width: 512,
+            height: 256
+          });
+          }, 0);
+        }
+      });
+    }, options);
+    videoWrappers.forEach(function(videoWrapper) {
+      observer.observe(videoWrapper);
+    });
+  }
+    function initializeTwitch() {
+      var script = document.createElement("script");
+      script.src = TWITCH_EXTENSION_URL;
+      document.body.appendChild(script);
+      TWITCH_TAG_IS_ADDDED = true;
+
+      script.onload = function() {
+        TWITCH_IS_INITIALIZED = true;
+        initializeObserver();
+      }
+    }
+
+    initializeTwitch();
+  });
+</script>
+
+<!-- remove videowrapper from phones -->
+<script>
+  if (window.innerWidth <= 767) {
+    var elements = document.querySelectorAll('[data-mobile-hidden]');
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.display = 'none';
+    }
+  }
+      </script>
+
+
+
+<script>
+if (window.location.hash) {
+window.location = window.location.href.replace(window.location.hash, '');
+}
+</script>
+
+<!-- Scripts -->
+<script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script defer src="assets/js/animation.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+<script defer src="assets/js/custom.js"></script>
+</body>
+
 <footer>
   <div class="container">
     <div class="row">
@@ -345,80 +422,5 @@
   </div>
 </footer>
 
-  <script type="text/javascript">
-    var TWITCH_EXTENSION_URL = "https://player.twitch.tv/js/embed/v1.js";
-    var TWITCH_IS_INITIALIZED = false;
-    var TWITCH_TAG_IS_ADDDED = false;
-
-
-    document.addEventListener("DOMContentLoaded", function() {
-      var videoWrappers = document.querySelectorAll(".video-wrapper");
-
-      var options = {
-        rootMargin: "0px",
-        threshold: 0,
-      };
-
-      function initializeObserver() {
-        var observer = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting && TWITCH_IS_INITIALIZED) {
-            observer.unobserve(entry.target);
-
-            setTimeout(() => {
-              new Twitch.Player(entry.target.querySelector("div").id, {
-              channel: entry.target.querySelector("div").id.replace("twitch-embed_", ""),
-              width: 512,
-              height: 256
-            });
-            }, 0);
-          }
-        });
-      }, options);
-      videoWrappers.forEach(function(videoWrapper) {
-        observer.observe(videoWrapper);
-      });
-    }
-      function initializeTwitch() {
-        var script = document.createElement("script");
-        script.src = TWITCH_EXTENSION_URL;
-        document.body.appendChild(script);
-        TWITCH_TAG_IS_ADDDED = true;
-
-        script.onload = function() {
-          TWITCH_IS_INITIALIZED = true;
-          initializeObserver();
-        }
-      }
-
-      initializeTwitch();
-    });
-  </script>
-
-  <!-- remove videowrapper from phones -->
-  <script>
-    if (window.innerWidth <= 767) {
-      var elements = document.querySelectorAll('[data-mobile-hidden]');
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'none';
-      }
-    }
-        </script>
-
-
-
-<script>
-if (window.location.hash) {
-window.location = window.location.href.replace(window.location.hash, '');
-}
-</script>
-
-  <!-- Scripts -->
-  <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-  <script defer src="assets/js/animation.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
-  <script defer src="assets/js/custom.js"></script>
-</body>
+ 
 </html>

@@ -137,7 +137,7 @@ global styles // ШРИФТЫ stndrt - font-family: 'Poppins', sans-serif;   fon
 
 html,
 body {
-  background: #fff url(/assets/images/4.webp) center center repeat;
+  background: #fff url(../images/4.webp) center center repeat;
 /*   background-size: 70%;*/
   font-family: 'Poppins', sans-serif; 
   
